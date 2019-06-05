@@ -1,23 +1,24 @@
 package Lesson1;
 
 public class Arrays<T> {
-    private T arr [];
+    private T arr[];
     T object;
 
-    public Arrays(T ... arr) {
+    public Arrays(T... arr) {
         this.arr = arr;
     }
 
-    public void changePosition(){
+    public void changePosition() {
 
-        for (int i = 0; i <arr.length/2 ; i++) {
+        for (int i = 0; i < arr.length / 2; i++) {
             object = arr[i];
-            arr[i]=arr[arr.length-1-i];
-            arr[arr.length-1-i]=object;
+            arr[i] = arr[arr.length - 1 - i];
+            arr[arr.length - 1 - i] = object;
         }
     }
-    public void printArr(){
-        for (int i = 0; i <arr.length ; i++) {
+
+    public void printArr() {
+        for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i]);
 
         }
@@ -25,7 +26,7 @@ public class Arrays<T> {
     }
 
     public static void main(String[] args) {
-        Arrays<String> stringArrays = new Arrays<>("f", "a", "c","d","e");
+        Arrays<String> stringArrays = new Arrays<>("f", "a", "c", "d", "e");
         Arrays<Integer> intArrays = new Arrays<>(1, 2, 3, 4, 5);
         System.out.println("Исходный массив: ");
         stringArrays.printArr();
