@@ -59,6 +59,11 @@ class Box<T extends Fruit> {
         }
         fruitBox.removeAll(this.fruitBox);
     }
+
+    public void addFruit(T fruit){
+        fruitBox.add(fruit);
+    }
+
 }
 
 class Main {
@@ -78,15 +83,15 @@ class Main {
         Box<Apple> appleBox = new Box<>(apples);
         Box<Apple> appleBox2 = new Box<>(apples2);
         Box<Orange> orangeBox = new Box<>(oranges);
-        appleBox.fruitBox.add(a1);
-        appleBox.fruitBox.add(a2);
-        appleBox.fruitBox.add(a3);
-        appleBox2.fruitBox.add(a4);
-        appleBox2.fruitBox.add(a5);
-        appleBox2.fruitBox.add(a6);
-        orangeBox.fruitBox.add(o1);
-        orangeBox.fruitBox.add(o2);
-        orangeBox.fruitBox.add(o3);
+        appleBox.addFruit(a1);
+        appleBox.addFruit(a2);
+        appleBox.addFruit(a3);
+        appleBox2.addFruit(a4);
+        appleBox2.addFruit(a5);
+        appleBox2.addFruit(a6);
+        orangeBox.addFruit(o1);
+        orangeBox.addFruit(o2);
+        orangeBox.addFruit(o3);
         System.out.println("Вес коробки с апельсинами = " + orangeBox.getWeight(orangeBox));
         System.out.println("Вес коробки с яблоками = " + appleBox.getWeight(appleBox));
         System.out.println("Вес второй коробки с яблоками = " + appleBox2.getWeight(appleBox2));
