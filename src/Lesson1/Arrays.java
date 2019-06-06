@@ -1,11 +1,19 @@
 package Lesson1;
 
+import java.util.ArrayList;
+
 public class Arrays<T> {
     private T arr[];
     T object;
+    ArrayList<T> arrayList;
 
     public Arrays(T... arr) {
         this.arr = arr;
+    }
+    public void asArrayList(T[] array){
+        for (int i = 0; i <array.length ; i++) {
+            arrayList.add(array[i]);
+        }
     }
 
     public void changePosition() {
@@ -25,9 +33,12 @@ public class Arrays<T> {
         System.out.println();
     }
 
+
+
     public static void main(String[] args) {
         Arrays<String> stringArrays = new Arrays<>("f", "a", "c", "d", "e");
         Arrays<Integer> intArrays = new Arrays<>(1, 2, 3, 4, 5);
+        Arrays<Integer> intAr = new Arrays<>();
         System.out.println("Исходный массив: ");
         stringArrays.printArr();
         System.out.println("Измененный массив: ");
@@ -38,6 +49,7 @@ public class Arrays<T> {
         System.out.println("Измененный массив: ");
         intArrays.changePosition();
         intArrays.printArr();
+
     }
 
 }
