@@ -1,19 +1,11 @@
 package Lesson1;
 
-import java.util.ArrayList;
-
 public class Arrays<T> {
     private T arr[];
     T object;
-    ArrayList<T> arrayList;
 
     public Arrays(T... arr) {
         this.arr = arr;
-    }
-    public void asArrayList(T[] array){
-        for (int i = 0; i <array.length ; i++) {
-            arrayList.add(array[i]);
-        }
     }
 
     public void changePosition() {
@@ -32,7 +24,6 @@ public class Arrays<T> {
         }
         System.out.println();
     }
-
 
 
     public static void main(String[] args) {
