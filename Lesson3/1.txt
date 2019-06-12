@@ -1155,4 +1155,4 @@ public class EffectsAndTransformsDemo extends Application {
     myStage.show();  
   }  
 }
-
+end file 1
