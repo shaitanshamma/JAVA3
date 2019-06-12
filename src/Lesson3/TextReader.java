@@ -37,7 +37,7 @@ public class TextReader {
         }
         fileReader.close();
         buff.close();
-        return pages = length / charAtPage;
+        return pages = 1 + length / charAtPage;
 
     }
 
@@ -52,10 +52,21 @@ public class TextReader {
         InputStreamReader in = new InputStreamReader(new FileInputStream(book), "UTF-8");
         int x;
         char[] chars = new char[length];
-        while ((x = in.read(chars)) > 0) {
-            for (int i = (charAtPage * (yourPage - 1)); i < (yourPage * charAtPage); i++) {
-                System.out.print(chars[i]);
+        int charAtLastPage = length - charAtPage * (pages - 1);
+        while ((x = in.read(chars)) != -1) {
+            if (yourPage < pages) {
+                for (int i = (charAtPage * (yourPage - 1)); i < ((yourPage) * charAtPage); i++) {
+                    System.out.print(chars[i]);
+                }
+            } else {
+                for (int i = (length - charAtLastPage); i < (length); i++) {
+                    System.out.print(chars[i]);
+                }
             }
+
+//            for (int i = 0; i <length ; i++) {
+//                System.out.print(chars[i]);
+//            }
         }
         System.out.print("\n" + "Показать еще страницу ?   ДА  /  НЕТ");
         String answer;
