@@ -1,6 +1,7 @@
 package Lesson3;
 
 import java.io.*;
+import java.io.FileReader;
 import java.util.Scanner;
 
 public class TextReader {
@@ -15,20 +16,29 @@ public class TextReader {
     }
 
     public int checkLength() throws IOException {
-        FileInputStream inputStream = new FileInputStream(book);
+
+        FileReader fileReader = new FileReader(book);
+        BufferedReader buff = new BufferedReader(fileReader);
         int x;
-        while ((x = inputStream.read()) != -1) {
+        while ((x = buff.read()) != -1) {
             length++;
         }
+        fileReader.close();
+        buff.close();
         return length;
     }
 
     public int checkPages() throws IOException {
-        FileInputStream inputStream = new FileInputStream(book);
+
+        FileReader fileReader = new FileReader(book);
+        BufferedReader buff = new BufferedReader(fileReader);
         int x;
-        while ((x = inputStream.read()) != -1) {
+        while ((x = buff.read()) != -1) {
         }
+        fileReader.close();
+        buff.close();
         return pages = length / charAtPage;
+
     }
 
     public void chosePage() {
@@ -39,22 +49,30 @@ public class TextReader {
     }
 
     public void showPage() throws IOException {
-        FileInputStream inputStream = new FileInputStream(book);
+        InputStreamReader in = new InputStreamReader(new FileInputStream(book), "UTF-8");
         int x;
-        byte[] chars = new byte[length];
-        while ((x = inputStream.read(chars)) > 0) {
+        char[] chars = new char[length];
+        while ((x = in.read(chars)) > 0) {
             for (int i = (charAtPage * (yourPage - 1)); i < (yourPage * charAtPage); i++) {
-                System.out.print((char) chars[i]);
-
+                System.out.print(chars[i]);
             }
         }
+        System.out.print("\n" + "Показать еще страницу ?   ДА  /  НЕТ");
+        String answer;
+        Scanner scanner = new Scanner(System.in);
+        answer = scanner.nextLine();
+        if (answer.toUpperCase().equals("ДА")) {
+            chosePage();
+            showPage();
+        }
+        in.close();
     }
 }
 
 class Main {
     public static void main(String[] args) throws IOException {
-        TextReader tr = new TextReader(3000);
-        tr.book = new File("Lesson3/1.txt");
+        TextReader tr = new TextReader(1800);
+        tr.book = new File("Lesson3/6.txt");
         tr.checkLength();
         System.out.println(tr.length);
         tr.checkPages();
