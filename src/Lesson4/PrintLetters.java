@@ -75,9 +75,12 @@ public class PrintLetters {
                 }
             }
         });
-        t1.start();
-        t2.start();
+        t1.setPriority(1);
+        t2.setPriority(8);
+        t3.setPriority(10);
         t3.start();
+        t2.start();
+        t1.start();
 
     }
 }
