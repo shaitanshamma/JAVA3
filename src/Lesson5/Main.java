@@ -5,21 +5,30 @@ import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     public static final int CARS_COUNT = 4;
+
 
     public static void main(String[] args) throws BrokenBarrierException, InterruptedException {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
         Race race = new Race(new Road(60), new Tunnel(), new Road(40));
         Car[] cars = new Car[CARS_COUNT];
+
         for (int i = 0; i < cars.length; i++) {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 10));
         }
+        CyclicBarrier cb = new CyclicBarrier(CARS_COUNT);
         for (int i = 0; i < cars.length; i++) {
             new Thread(cars[i]).start();
         }
+        int i = race.getStages().size();
+        System.out.println(i);
+
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
+
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
     }
 }
@@ -49,12 +58,16 @@ class Car implements Runnable {
         CARS_COUNT++;
         this.name = "Участник #" + CARS_COUNT;
     }
-    CyclicBarrier cb = new CyclicBarrier(4);
+
+    //CyclicBarrier cb = new CyclicBarrier(4);
+   // CountDownLatch countDownLatch = new CountDownLatch(4);
+    AtomicInteger winner = new AtomicInteger(0);
     @Override
     public void run() {
         try {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int) (Math.random() * 800));
+
             System.out.println(this.name + " готов");
 
         } catch (Exception e) {
@@ -63,7 +76,9 @@ class Car implements Runnable {
 
         for (int i = 0; i < race.getStages().size(); i++) {
             race.getStages().get(i).go(this);
-
+            if(i == race.getStages().size()-1){
+                System.out.println( this.name + " занял " + winner.incrementAndGet());
+            }
         }
     }
 }
@@ -102,7 +117,7 @@ class Tunnel extends Stage {
         this.length = 80;
         this.description = "Тоннель " + length + " метров";
     }
-
+    Semaphore semaphore = new Semaphore(2);
     @Override
     public void go(Car c) {
         try {
@@ -110,10 +125,12 @@ class Tunnel extends Stage {
                 System.out.println(c.getName() + " готовится к этапу(ждет): " + description);
                 System.out.println(c.getName() + " начал этап: " + description);
                 Thread.sleep(length / c.getSpeed() * 1000);
+                semaphore.acquire();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
                 System.out.println(c.getName() + " закончил этап: " + description);
+                semaphore.release();
             }
         } catch (Exception e) {
             e.printStackTrace();
