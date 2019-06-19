@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     public static final int CARS_COUNT = 4;
-
+ static  AtomicInteger winner = new AtomicInteger(0);
 
     public static void main(String[] args) throws BrokenBarrierException, InterruptedException {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
@@ -20,15 +20,13 @@ public class Main {
         for (int i = 0; i < cars.length; i++) {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 10));
         }
-        CyclicBarrier cb = new CyclicBarrier(CARS_COUNT);
+        CyclicBarrier cb = new CyclicBarrier(1);
         for (int i = 0; i < cars.length; i++) {
             new Thread(cars[i]).start();
         }
-        int i = race.getStages().size();
-        System.out.println(i);
 
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
-
+        
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
     }
 }
@@ -61,7 +59,7 @@ class Car implements Runnable {
 
     //CyclicBarrier cb = new CyclicBarrier(4);
    // CountDownLatch countDownLatch = new CountDownLatch(4);
-    AtomicInteger winner = new AtomicInteger(0);
+
     @Override
     public void run() {
         try {
@@ -77,7 +75,7 @@ class Car implements Runnable {
         for (int i = 0; i < race.getStages().size(); i++) {
             race.getStages().get(i).go(this);
             if(i == race.getStages().size()-1){
-                System.out.println( this.name + " занял " + winner.incrementAndGet());
+                System.out.println( this.name + " занял " + Main.winner.incrementAndGet()+ " место!");
             }
         }
     }
