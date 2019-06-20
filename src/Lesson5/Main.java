@@ -9,8 +9,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
+    public static CyclicBarrier cb = new CyclicBarrier(4, new Starter());
     public static final int CARS_COUNT = 4;
- static  AtomicInteger winner = new AtomicInteger(0);
+    static AtomicInteger winner = new AtomicInteger(0);
 
     public static void main(String[] args) throws BrokenBarrierException, InterruptedException {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
@@ -20,14 +21,17 @@ public class Main {
         for (int i = 0; i < cars.length; i++) {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 10));
         }
-        CyclicBarrier cb = new CyclicBarrier(1);
         for (int i = 0; i < cars.length; i++) {
-            new Thread(cars[i]).start();
+            Thread ti = new Thread(cars[i]);
+            ti.start();
         }
+    }
+}
 
+class Starter implements Runnable {
+    @Override
+    public void run() {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
-        
-        System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
     }
 }
 
@@ -57,25 +61,27 @@ class Car implements Runnable {
         this.name = "Участник #" + CARS_COUNT;
     }
 
-    //CyclicBarrier cb = new CyclicBarrier(4);
-   // CountDownLatch countDownLatch = new CountDownLatch(4);
-
     @Override
     public void run() {
         try {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int) (Math.random() * 800));
-
             System.out.println(this.name + " готов");
+            Main.cb.await();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         for (int i = 0; i < race.getStages().size(); i++) {
+
             race.getStages().get(i).go(this);
-            if(i == race.getStages().size()-1){
-                System.out.println( this.name + " занял " + Main.winner.incrementAndGet()+ " место!");
+
+            if (i == race.getStages().size() - 1) {
+                System.out.println(this.name + " занял " + Main.winner.incrementAndGet() + " место!");
+            }
+            if (Main.winner.get() == CARS_COUNT) {
+                System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
             }
         }
     }
@@ -115,7 +121,9 @@ class Tunnel extends Stage {
         this.length = 80;
         this.description = "Тоннель " + length + " метров";
     }
-    Semaphore semaphore = new Semaphore(2);
+
+    Semaphore semaphore = new Semaphore(Main.CARS_COUNT / 2);
+
     @Override
     public void go(Car c) {
         try {
