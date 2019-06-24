@@ -12,7 +12,7 @@ public class TestArr {
     @Test(expected = RuntimeException.class)
     public void testArr1(){
         int [] checkingArr = {3,2,3,0,5,2,3};
-        int [] rezultArr = {3,2,3,0,5,2};
+        int [] rezultArr = null;
         Assert.assertArrayEquals(rezultArr,array.checkFourInArray(checkingArr));
     }
 

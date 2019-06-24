@@ -11,18 +11,19 @@ public class Array {
             }
             size = array.length - w - 1;
         }
-        if (w == 0) {
+        if (w == 0 && array[0]!=4) {
             try {
                 throw new RuntimeException("нет четверок!");
             } catch (RuntimeException e) {
                 e.printStackTrace();
+                return null;
             }
         } else {
             int[] arr = new int[size];
             System.arraycopy(array, w + 1, arr, 0, size);
             System.out.println(Arrays.toString(arr));
             return arr;
-        }return null;
+        }
     }
 
     public boolean checkForOneAndFour(int[] array) {
@@ -42,7 +43,7 @@ public class Array {
 
     public static void main(String[] args) {
         Array arrays = new Array();
-        int[] arr = {2, 2, 0, 3, 3, 4, 3, 2, 1, 1, 1};
+        int[] arr = {1, 1, 0, 3, 3, 0, 3, 2, 1, 1, 1};
         System.out.println(arrays.checkForOneAndFour(arr));
         arrays.checkFourInArray(arr);
     }
