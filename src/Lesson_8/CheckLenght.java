@@ -50,7 +50,6 @@ class Main {
 
         // Второй вариант
         CheckLenght.popOne(list);
-        System.out.println(CheckLenght.marker);
         CheckLenght.pushMarker(list, CheckLenght.marker);
         size2++;
         for (Object o:list) {
